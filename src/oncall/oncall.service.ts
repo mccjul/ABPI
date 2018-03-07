@@ -16,8 +16,6 @@ export class OncallService {
   }
 
   async create(schedules: [ScheduleDto]): Promise<Schedule[]> {
-    // const obj = this.oncallRepository.create(schedule);
-    // return await this.oncallRepository.save(obj);
     const obj = this.oncallRepository.create(schedules);
     await this.oncallRepository.save(obj);
     return obj;

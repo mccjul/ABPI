@@ -1,21 +1,13 @@
 import { Module, Logger } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-// import { AppController } from "./app.controller";
 import { OncallModule } from "./oncall/oncall.module";
 
+import envConfig from "./config.env";
+const { ormtype: ormConfig } = envConfig;
+
 @Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: "mongodb",
-      database: "local",
-      host: "localhost", // for docker mongodb
-      entities: [__dirname + "/../**/*.entity{.ts,.js}"],
-      synchronize: true
-    }),
-    OncallModule,
-    Logger
-  ],
+  imports: [TypeOrmModule.forRoot(ormConfig), OncallModule, Logger],
   controllers: [],
   components: []
 })

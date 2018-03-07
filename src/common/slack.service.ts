@@ -1,12 +1,14 @@
 import { Component } from "@nestjs/common";
-import { slackProvider } from "./providers";
+import envConfig from "../config.env";
 import { WebClient } from "@slack/client";
+
+const { slack: slackToken } = envConfig;
 
 @Component()
 export class SlackService {
   webclient: any;
   constructor() {
-    this.webclient = new WebClient(slackProvider);
+    this.webclient = new WebClient(slackToken);
   }
 
   async getUserList() {
