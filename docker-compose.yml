@@ -9,10 +9,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     ports:
       - '8080:8080'
     links:
       - mongo
+
+  abpi-frontend:
+    container_name: "abpi-frontend"
+    image: "dethbug/abpi-client:latest"
+    environment:
+      - NODE_ENV=production
+    restart: always
+    ports:
+      - '80:80'
 
   mongo:
     image: "mongo:3.4"
