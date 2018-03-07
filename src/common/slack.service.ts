@@ -2,15 +2,17 @@ import { Component } from "@nestjs/common";
 import { slackProvider } from "./providers";
 import { WebClient } from "@slack/client";
 
-// An access token (from your Slack app or custom integration - xoxp, xoxb, or xoxa)
-const token = process.env.SLACK_TOKEN;
-
-const web = new WebClient(token);
-
 @Component()
 export class SlackService {
   webclient: any;
   constructor() {
-    this.webclient = new WebClient(token);
+    this.webclient = new WebClient(slackProvider);
+  }
+
+  async getUserList() {
+    const list = await this.webclient.users.list();
+    return list.members
+      .filter(elm => !elm.is_bot && !(elm.name === "slackbot"))
+      .map(elm => ({ id: elm.id, name: elm.name, real_name: elm.real_name }));
   }
 }

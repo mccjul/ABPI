@@ -4,7 +4,12 @@ import { Entity, Column, ObjectIdColumn, ObjectID } from "typeorm";
 export class Schedule {
   @ObjectIdColumn() id: ObjectID;
 
-  @Column() name: string;
+  @Column()
+  user: {
+    id: string;
+    name: string;
+    real_name: string;
+  };
 
   @Column() startDate: Date;
 
