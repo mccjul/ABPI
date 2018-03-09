@@ -6,7 +6,8 @@ const config = {
   development: {
     cors: true,
     port: 8080,
-    slack: process.env.SLACK,
+    slackbot: process.env.SLACK_BOT,
+    slackuser: process.env.SLACK_USER,
     recastai: "",
     auth0: "",
     ormtype: {
@@ -24,7 +25,8 @@ const config = {
   production: {
     cors: false,
     port: 8080,
-    slack: process.env.SLACK,
+    slackbot: process.env.SLACK_BOT,
+    slackuser: process.env.SLACK_USER,
     recastai: "",
     auth0: "",
     ormtype: {

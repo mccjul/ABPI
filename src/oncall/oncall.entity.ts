@@ -14,4 +14,8 @@ export class Schedule {
   @Column() startDate: Date;
 
   @Column() endDate: Date;
+
+  @Column() reminder_access: string;
+
+  @Column() reminder_oncall: string;
 }

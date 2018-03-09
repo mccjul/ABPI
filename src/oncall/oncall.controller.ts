@@ -29,17 +29,24 @@ export class OncallController {
   getUsers() {
     return this.slackService.getUserList();
   }
-  // @Get(":id")
-  // findOne(@Param() params): Promise<Schedule> {
-  //   return this.oncallService.findOne(params.id);
-  // }
 
   // TODO: query by date
-  // TODO: query by month
+  @Get("/date:date")
+  async getNameByDate() {}
+
   // TODO: query by name
+  @Get("/name:name")
+  async getDateByName() {}
+
+  // TODO: update
+  @Put("/:id")
+  async updateSchedual() {}
+  // TODO: delete
+  @Delete("/:id")
+  async deleteSchedual() {}
+
   @Post()
   async create(@Body() schedules: [ScheduleDto]): Promise<Schedule[]> {
-    Logger.log(JSON.stringify(schedules));
     return this.oncallService.create(schedules);
   }
 }
