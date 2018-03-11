@@ -4,7 +4,7 @@ import { MongoRepository } from "typeorm";
 import { Schedule } from "./oncall.entity";
 import { ScheduleDto } from "./oncall.dto";
 import { SlackService } from "../common/slack.service";
-import { ObjectId } from "mongodb";
+import { ObjectId, ISODate } from "mongodb";
 
 @Component()
 export class OncallService {
@@ -20,19 +20,12 @@ export class OncallService {
 
   async findbyDate(date: Date) {
     const _date = new Date(date);
-    // console.log(_date);
 
     const _aggregate = this.oncallRepository.aggregate([
       {
         $match: {
-          $and: [
-            {
-              startDate: { $gt: _date }
-            },
-            {
-              endDate: { $lt: _date }
-            }
-          ]
+          startDate: { $lt: _date },
+          endDate: { $gt: _date }
         }
       },
       {
@@ -47,21 +40,19 @@ export class OncallService {
   }
 
   async findbyName(name: string) {
-    // console.log(name);
     const _date = new Date();
 
     const _aggregate = this.oncallRepository.aggregate([
       {
         $match: {
-          // $and: [
-          //   {
-          //     user: { real_name: name }
-          //   }
-          //   {
-          //     startDate: { $gt: _date }
-          //   }
-          // ]
-          user: { real_name: name }
+          $and: [
+            {
+              $or: [{ "user.real_name": name }, { "user.name": name }]
+            },
+            {
+              startDate: { $gt: _date }
+            }
+          ]
         }
       },
       {

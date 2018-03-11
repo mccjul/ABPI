@@ -30,13 +30,11 @@ export class OncallController {
     return this.slackService.getUserList();
   }
 
-  // TODO: query by date
   @Get("query/date/:date")
   async getNameByDate(@Param() params) {
     return this.oncallService.findbyDate(params.date);
   }
 
-  // TODO: query by name
   @Get("query/name/:name")
   async getDateByName(@Param() params) {
     return this.oncallService.findbyName(params.name);
