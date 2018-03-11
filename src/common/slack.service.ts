@@ -3,6 +3,7 @@ import envConfig from "../config.env";
 import { WebClient } from "@slack/client";
 import { Reminder } from "./slack.types";
 import { Schedule } from "../oncall/oncall.entity";
+import * as moment from "moment";
 
 const { slackbot: slackbotToken, slackuser: slackuserToken } = envConfig;
 
@@ -33,17 +34,26 @@ export class SlackService {
   async onCreateReminders(schedules: Schedule[]): Promise<Schedule[]> {
     const access_reminder_text = "You need to get your accesses";
     const oncall_reminder_text = "You are now oncall. Good Luck!";
+
     for (const schedule of schedules) {
       const { user, startDate } = schedule;
+
+      const _access_date = moment(startDate.toString(), "DD-MM-YYYY")
+        .subtract(1, "week")
+        .format("DD-MM-YYYY");
+
       const access = await this.setReminder(
-        new Reminder(access_reminder_text, startDate.toString(), user.id)
+        new Reminder(access_reminder_text, _access_date, user.id)
       );
+
       const oncall = await this.setReminder(
         new Reminder(oncall_reminder_text, startDate.toString(), user.id)
       );
+
       schedule.reminder_access = access.reminder.id;
       schedule.reminder_oncall = oncall.reminder.id;
     }
+
     return schedules;
   }
 

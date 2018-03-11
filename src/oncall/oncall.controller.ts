@@ -38,7 +38,6 @@ export class OncallController {
   @Get("/name:name")
   async getDateByName() {}
 
-  // TODO: update
   @Put("/:id")
   async updateSchedual(@Param() params, @Body() schedule: ScheduleDto) {
     return await this.oncallService.update(params.id, schedule);
