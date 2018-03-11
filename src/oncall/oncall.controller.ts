@@ -40,10 +40,14 @@ export class OncallController {
 
   // TODO: update
   @Put("/:id")
-  async updateSchedual() {}
-  // TODO: delete
+  async updateSchedual(@Param() params, @Body() schedule: ScheduleDto) {
+    return await this.oncallService.update(params.id, schedule);
+  }
+
   @Delete("/:id")
-  async deleteSchedual() {}
+  async deleteSchedual(@Param() params) {
+    return await this.oncallService.delete(params.id);
+  }
 
   @Post()
   async create(@Body() schedules: [ScheduleDto]): Promise<Schedule[]> {

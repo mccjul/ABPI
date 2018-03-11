@@ -30,7 +30,7 @@ export class SlackService {
     });
   }
 
-  async onCreateReminders(schedules: Schedule[]) {
+  async onCreateReminders(schedules: Schedule[]): Promise<Schedule[]> {
     const access_reminder_text = "You need to get your accesses";
     const oncall_reminder_text = "You are now oncall. Good Luck!";
     for (const schedule of schedules) {
@@ -45,5 +45,23 @@ export class SlackService {
       schedule.reminder_oncall = oncall.reminder.id;
     }
     return schedules;
+  }
+
+  async updateReminder(schedule: Schedule) {
+    await this.deleteReminder(
+      schedule.reminder_access,
+      schedule.reminder_oncall
+    );
+    const sched_array = await this.onCreateReminders([schedule]);
+    return sched_array[0];
+  }
+
+  async deleteReminder(access_reminder_id: string, oncall_reminder_id: string) {
+    await this.user_webclient.reminders.delete({
+      reminder: access_reminder_id
+    });
+    await this.user_webclient.reminders.delete({
+      reminder: oncall_reminder_id
+    });
   }
 }
