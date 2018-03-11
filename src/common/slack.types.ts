@@ -6,7 +6,7 @@ export class Reminder {
   constructor(text, time, user_id) {
     this.text = text;
     /* convert to unix time in seconds */
-    this.time = +moment(time, "DD-MM-YYYY").format("X");
+    this.time = +moment(time).format("X");
     this.user = user_id;
   }
 }

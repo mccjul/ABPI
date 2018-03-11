@@ -38,20 +38,23 @@ export class SlackService {
     for (const schedule of schedules) {
       const { user, startDate } = schedule;
 
-      const _access_date = moment(startDate.toString(), "DD-MM-YYYY")
+      const _access_date = moment(startDate.toISOString())
         .subtract(1, "week")
-        .format("DD-MM-YYYY");
+        .format();
 
-      const access = await this.setReminder(
-        new Reminder(access_reminder_text, _access_date, user.id)
-      );
+      if (moment(_access_date).diff(moment()) > 0) {
+        const access = await this.setReminder(
+          new Reminder(access_reminder_text, _access_date, user.id)
+        );
+        schedule.reminder_access = access.reminder.id;
+      }
 
-      const oncall = await this.setReminder(
-        new Reminder(oncall_reminder_text, startDate.toString(), user.id)
-      );
-
-      schedule.reminder_access = access.reminder.id;
-      schedule.reminder_oncall = oncall.reminder.id;
+      if (moment(startDate.toISOString()).diff(moment()) > 0) {
+        const oncall = await this.setReminder(
+          new Reminder(oncall_reminder_text, startDate.toISOString(), user.id)
+        );
+        schedule.reminder_oncall = oncall.reminder.id;
+      }
     }
 
     return schedules;

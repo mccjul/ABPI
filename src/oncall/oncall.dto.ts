@@ -7,7 +7,7 @@ export class ScheduleDto {
     readonly real_name: string;
   };
 
-  readonly startDate: string;
+  readonly startDate: Date = new Date();
 
-  readonly endDate: string;
+  readonly endDate: Date = new Date();
 }

@@ -31,12 +31,16 @@ export class OncallController {
   }
 
   // TODO: query by date
-  @Get("/date:date")
-  async getNameByDate() {}
+  @Get("query/date/:date")
+  async getNameByDate(@Param() params) {
+    return this.oncallService.findbyDate(params.date);
+  }
 
   // TODO: query by name
-  @Get("/name:name")
-  async getDateByName() {}
+  @Get("query/name/:name")
+  async getDateByName(@Param() params) {
+    return this.oncallService.findbyName(params.name);
+  }
 
   @Put("/:id")
   async updateSchedual(@Param() params, @Body() schedule: ScheduleDto) {
